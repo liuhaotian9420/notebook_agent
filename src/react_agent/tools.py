@@ -1,18 +1,30 @@
-"""This module provides example tools for web scraping and search functionality.
+"""This module provides tools for notebook manipulation and data analysis.
 
-It includes a basic Tavily search function (as an example)
-
-These tools are intended as free examples to get started. For production use,
-consider implementing more robust and specialized tools tailored to your needs.
+It includes tools for creating, editing, and converting Jupyter notebooks,
+as well as tools for data analysis and visualization.
 """
 
 from typing import Any, Callable, List, Optional, cast
-
-from langchain_tavily import TavilySearch  # type: ignore[import-not-found]
-
-from react_agent.configuration import Configuration
 import json, os, time
 import pandas as pd
+
+# Import from our custom tools and schema modules
+import sys
+import os.path
+
+# Add the parent directory to sys.path to enable imports
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Import tools and schema
+from tools.notebook import edit_cell, create_cell, insert_cell, merge_cells, append_cell, swap_cells
+from tools.notebook import convert_notebook_to_format, convert_file_to_notebook, convert_notebook_to_executable
+from tools.notebook import notebook_from_markdown, extract_code_from_notebook
+
+# Import schema models
+from schema.notebook import Notebook, Cell, NotebookMetadata, CellOutput
+
+# Local imports
+from react_agent.configuration import Configuration
 
 
 # async def search(query: str) -> Optional[dict[str, Any]]:
@@ -60,4 +72,25 @@ def save_notebook(notebook):
     return f"{file_name} 保存成功"
 
 
-TOOLS: List[Callable[..., Any]] = [generate_notebook, save_notebook, summary_csv]
+# Define all available tools
+TOOLS: List[Callable[..., Any]] = [
+    # Existing tools
+    generate_notebook, 
+    save_notebook, 
+    summary_csv,
+    
+    # Cell manipulation tools
+    edit_cell,
+    create_cell,
+    insert_cell,
+    merge_cells,
+    append_cell,
+    swap_cells,
+    
+    # Conversion tools
+    convert_notebook_to_format,
+    convert_file_to_notebook,
+    convert_notebook_to_executable,
+    notebook_from_markdown,
+    extract_code_from_notebook
+]

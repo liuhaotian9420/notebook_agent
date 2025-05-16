@@ -1,1 +1,1 @@
-'''Tools related to CRUD Notebook'''
+'''Tools related to accessing, reading and writing to local files in designated directories'''
